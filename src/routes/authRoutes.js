@@ -2,8 +2,8 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/api/reservations', (req, res) => {
-    res.send('Reservation Route');
+router.get('/api/auth', (req, res) => {
+    res.send('Auth Route');
 });
 
 module.exports = router;
