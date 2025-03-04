@@ -17,7 +17,7 @@ router.post('/', creatUser);
 // 이메일 중복
 router.post('/duplex', duplicatedEmail);
 // 회원 정보 수정
-router.put('/:user_idid', updateUser);
+router.put('/:user_id', updateUser);
 // 회원 정보 삭제
 router.delete('/:user_id', deleteUser);
 module.exports = router;

@@ -43,8 +43,8 @@ exports.duplicatedEmail = async (req, res) => {
 exports.getUser = async (req, res) => {
     try {
         const sql = `select * from users where user_id=?`;
-        const { id } = req.params;
-        const [result] = await pool.query(sql, [id]);
+        const { user_id } = req.params;
+        const [result] = await pool.query(sql, [user_id]);
         res.json(result);
     } catch (error) {
         res.status(500).json({ message: error.message });
