@@ -1,9 +1,12 @@
-// src/routes/fieldRoutes.js
 const express = require('express');
 const router = express.Router();
+const {
+    getFields,
+    getFieldById,
+    updateField,
+    updateFieldStatus,
+    checkAvailability,
+} = require('../controllers/fieldController');
 
-router.get('/api/fields', (req, res) => {
-    res.send('Field Route');
-});
-
+router.get('/', getFields);
 module.exports = router;

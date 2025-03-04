@@ -1,9 +1,11 @@
-// src/routes/noticeRoutes.js
 const express = require('express');
+const {login, refreshVerify, logout} = require('../controllers/authController')
 const router = express.Router();
 
-router.get('/api/auth', (req, res) => {
-    res.send('Auth Route');
-});
+
+// /api/auth/login
+router.post('/login', login);
+router.post('/refresh', refreshVerify);
+router.post('/logout', logout);
 
 module.exports = router;
