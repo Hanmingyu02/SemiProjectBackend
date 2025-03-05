@@ -56,4 +56,6 @@ exports.deleteNotice = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-exports.searchNotices = async (req, res) => {};
+exports.searchNotices = async (req, res) => {
+    
+};
