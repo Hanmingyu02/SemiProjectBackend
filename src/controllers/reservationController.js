@@ -1,5 +1,5 @@
-const pool = require('../config/dbPool');
-require('dotenv').config();
+const pool = require("../config/dbPool");
+require("dotenv").config();
 exports.getReservations = async (req, res) => {
     try {
         const [result] = await pool.query(sql);
@@ -11,12 +11,12 @@ exports.getReservations = async (req, res) => {
 };
 exports.createReservation = async (req, res) => {
     const { user_id, field_id, start_time, end_time } = req.body;
-    const reservationData = [user_id, field_id, start_time, end_time, 'PENDING'];
+    const reservationData = [user_id, field_id, start_time, end_time, "PENDING"];
     try {
         if (!user_id || !field_id || !start_time || !end_time) {
             return res.status(400).json({
-                result: 'fail',
-                message: '모든 필드(user_id, field_id, start_time, end_time)가 필요합니다',
+                result: "fail",
+                message: "모든 필드(user_id, field_id, start_time, end_time)가 필요합니다",
             });
         }
 
@@ -24,19 +24,19 @@ exports.createReservation = async (req, res) => {
         const end = new Date(end_time);
         if (isNaN(start.getTime()) || isNaN(end.getTime()) || end <= start) {
             return res.status(400).json({
-                result: 'fail',
-                message: '유효한 시간 범위가 필요합니다 (end_time > start_time)',
+                result: "fail",
+                message: "유효한 시간 범위가 필요합니다 (end_time > start_time)",
             });
         }
 
-        const [userResult] = await pool.query('select user_id from users where user_id = ?', [user_id]);
+        const [userResult] = await pool.query("select user_id from users where user_id = ?", [user_id]);
         if (userResult.length === 0) {
-            return res.status(404).json({ result: 'fail', message: '사용자를 찾을 수 없습니다' });
+            return res.status(404).json({ result: "fail", message: "사용자를 찾을 수 없습니다" });
         }
 
-        const [fieldResult] = await pool.query('select status from fields where field_id = ?', [field_id]);
-        if (fieldResult[0].status !== 'AVAILABLE') {
-            return res.status(400).json({ result: 'fail', message: '경기장이 사용 가능하지 않습니다' });
+        const [fieldResult] = await pool.query("select status from fields where field_id = ?", [field_id]);
+        if (fieldResult[0].status !== "AVAILABLE") {
+            return res.status(400).json({ result: "fail", message: "경기장이 사용 가능하지 않습니다" });
         }
 
         // 중복 예약 체크
@@ -52,8 +52,8 @@ exports.createReservation = async (req, res) => {
         );
         if (overlapResult.length > 0) {
             return res.status(400).json({
-                result: 'fail',
-                message: '이 시간대에 이미 예약된 경기장이 있습니다',
+                result: "fail",
+                message: "이 시간대에 이미 예약된 경기장이 있습니다",
             });
         }
 
@@ -74,16 +74,23 @@ exports.createReservation = async (req, res) => {
         await pool.commit();
 
         res.status(201).json({
-            result: 'success',
-            message: '예약 성공',
+            result: "success",
+            message: "예약 성공",
             reservation_id: reservationResult.insertId,
         });
     } catch (error) {
         await pool.rollback();
-        res.status(500).json({ result: 'fail', message: '서버 오류', error: error.message });
+        res.status(500).json({ result: "fail", message: "서버 오류", error: error.message });
     }
 };
 
-exports.updateReservation = async (req, res) => {};
+exports.updateReservation = async (req, res) => {
+    const { reservation_id } = req.params;
+    try {
+        
+    } catch (error) {
+        
+    }
+};
 exports.deleteReservation = async (req, res) => {};
 exports.updateReservationStatus = async (req, res) => {};

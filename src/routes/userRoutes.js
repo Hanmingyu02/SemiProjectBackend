@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {
     listUser,
-    creatUser,
+    createUser,
     getUser,
     duplicatedEmail,
     updateUser,
@@ -13,7 +13,7 @@ router.get('/', listUser);
 // 특정 회원 조회
 router.get('/:user_id', getUser);
 // 회원 가입
-router.post('/', creatUser);
+router.post('/', createUser);
 // 이메일 중복
 router.post('/duplex', duplicatedEmail);
 // 회원 정보 수정
