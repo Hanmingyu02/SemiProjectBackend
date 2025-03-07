@@ -1,9 +1,10 @@
-const pool = require("../config/dbPool");
-require("dotenv").config();
+const pool = require('../config/dbPool');
+require('dotenv').config();
 
 exports.getNotices = async (req, res) => {
+    // users 테이블과 조인하여 이메일을 가져오는 쿼리
     const sql = `
-        SELECT notices.notice_id, notices.title, notices.content, notices.created_at, users.email AS username
+        SELECT notices.notice_id, notices.title, notices.content, notices.created_at, users.username AS username
         FROM notices
         LEFT JOIN users ON notices.user_id = users.user_id
         ORDER BY notices.created_at DESC
@@ -15,7 +16,6 @@ exports.getNotices = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
 exports.getNoticeById = async (req, res) => {
     const { notice_id } = req.params;
     const sql = `
@@ -29,7 +29,7 @@ exports.getNoticeById = async (req, res) => {
         if (result.length === 0) {
             return res.status(404).json({ message: '게시글을 찾을 수 없습니다.' });
         }
-        res.json(result[0]);
+        res.json(result[0]); // 결과가 하나일 경우, 첫 번째 요소를 반환
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -37,7 +37,7 @@ exports.getNoticeById = async (req, res) => {
 
 exports.createNotice = async (req, res) => {
     const { title, content, user_id } = req.body;
-    const noticeData = [title, content, user_id];
+    const noticeData = [title, content, user_id]; // 데이터를 배열로 저장
     try {
         const sql = `INSERT INTO notices (title, content, user_id) VALUES (?, ?, ?)`;
         const [result] = await pool.query(sql, noticeData);
@@ -58,7 +58,7 @@ exports.updateNotice = async (req, res) => {
 
     try {
         const noticeData = [title, content, notice_id];
-        const sql = `UPDATE notices SET title=?, content=? WHERE notice_id=?`;
+        const sql = `update notices set title=?, content=? where notice_id=?`;
         const [result] = await pool.query(sql, noticeData);
         if (result.affectedRows === 0) {
             return res.json({ result: 'fail', message: '공지사항 수정 실패' });
@@ -74,7 +74,7 @@ exports.updateNotice = async (req, res) => {
 exports.deleteNotice = async (req, res) => {
     const { notice_id } = req.params;
     try {
-        const sql = 'DELETE FROM notices WHERE notice_id=?';
+        const sql = 'delete from notices where notice_id=?';
         const [result] = await pool.query(sql, [notice_id]);
         if (result.affectedRows === 0) {
             return res.json({ result: 'fail', message: '삭제할 공지사항이 존재하지 않음' });
