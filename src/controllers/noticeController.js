@@ -2,7 +2,6 @@ const pool = require('../config/dbPool');
 require('dotenv').config();
 
 exports.getNotices = async (req, res) => {
-    // users 테이블과 조인하여 이메일을 가져오는 쿼리
     const sql = `
         SELECT notices.notice_id, notices.title, notices.content, notices.created_at, users.username AS username
         FROM notices

@@ -32,6 +32,8 @@ app.use("/api/notices", noticeRouter);
 app.use("/api/reservations", reservationRouter);
 app.use("/api/auth", authRouter);
 
+app.use('/public', express.static(path.join(__dirname, 'public')));
+
 // 서버 가동
 app.listen(PORT, () => {
     console.log(`http://localhost:${PORT}`);
