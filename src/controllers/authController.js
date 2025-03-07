@@ -9,7 +9,7 @@ const generateToken = (user, secret, expiresIn) => {
 exports.login = async (req, res) => {
     const { email, passwd } = req.body;
     try {
-        const sql = 'select user_id,username,email from users where email=? and passwd=?';
+        const sql = 'select user_id,username,email,passwd from users where email=? and passwd=?';
 
         const [result] = await pool.query(sql, [email, passwd]);
         if (result.length === 0) {
@@ -22,7 +22,8 @@ exports.login = async (req, res) => {
 
         const sql2 = 'update users set refreshToken =? where user_id=?';
         await pool.query(sql2, [refreshToken, user.user_id]);
-
+        console.log(user);
+        
         res.json({ result: 'success', data: user, message: '로그인 성공', accessToken, refreshToken });
     } catch (error) {
         res.status(500).json({ error: 'DB Error', message: error.message });
@@ -54,7 +55,7 @@ exports.logout = async (req, res) => {
         const [result] = await pool.query(sql, [email]);
         if (result.affectedRows > 0) {
             res.json({ result: 'success', message: '로그아웃 처리 되었습니다' });
-        } else{
+        } else {
             res.status(400).json({ message: '유효하지 않은 사용자 입니다' });
         }
     } catch (error) {
